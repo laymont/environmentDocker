@@ -1,0 +1,21 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: dev-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=26QCDexGh7
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - development-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  development-network:
+    driver: bridge
