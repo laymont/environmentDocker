@@ -1,6 +1,6 @@
 # Entorno de Desarrollo Docker con Portainer
 
-Este proyecto configura un entorno de desarrollo local utilizando Docker Compose, que incluye Portainer para la gestión de contenedores y servicios esenciales como MySQL, PostgreSQL y Redis.
+Este proyecto configura un entorno de desarrollo local utilizando Docker Compose, que incluye Portainer para la gestión de contenedores y servicios esenciales como MySQL, PostgreSQL, Redis, MongoDB, RabbitMQ, Traefik, Mailhog y Elasticsearch/Kibana.
 
 ## Componentes
 
@@ -16,6 +16,19 @@ Este proyecto configura un entorno de desarrollo local utilizando Docker Compose
 * **Redis Server:**
     * Almacén de datos en memoria Redis para caché y almacenamiento de datos temporales.
     * Configurado con una contraseña, persistencia y zona horaria.
+* **MongoDB:**
+    * Base de datos NoSQL para aplicaciones que requieren flexibilidad y escalabilidad.
+* **RabbitMQ:**
+    * Un broker de mensajes para la comunicación entre servicios.
+    * Útil para arquitecturas basadas en microservicios.
+* **Traefik:**
+    * Un proxy inverso para gestionar el acceso a tus servicios.
+    * Facilita la configuración de dominios y certificados SSL.
+* **Mailhog:**
+    * Un servidor de correo electrónico de prueba para capturar y visualizar correos electrónicos enviados por tus aplicaciones.
+    * Útil para probar funcionalidades de envío de correos.
+* **Elasticsearch/Kibana:**
+    * Para logs y analisis de datos, muy util para microservicios.
 
 ## Requisitos
 
@@ -32,9 +45,23 @@ Este proyecto configura un entorno de desarrollo local utilizando Docker Compose
 
 2.  **Levanta los contenedores:**
 
-    ```bash
-    docker compose up -d
-    ```
+    * **Archivo principal:** El archivo `docker-compose.yml` en la raíz del proyecto contiene la configuración inicial para Portainer, MySQL, PostgreSQL y Redis.
+
+    * **Archivos adicionales:** Los archivos `docker-compose.mongodb.yml`, `docker-compose.rabbitmq.yml`, `docker-compose.traefik.yml`, `docker-compose.mailhog.yml` y `docker-compose.elk.yml` se encuentran en el directorio `addons/` y contienen la configuración para MongoDB, RabbitMQ, Traefik, Mailhog y Elasticsearch/Kibana, respectivamente.
+
+    * **Levantar todos los servicios:** Para levantar todos los servicios, ejecuta el siguiente comando desde la raíz del proyecto:
+
+        ```bash
+        docker compose -f docker-compose.yml -f addons/docker-compose.mongodb.yml -f addons/docker-compose.rabbitmq.yml -f addons/docker-compose.traefik.yml -f addons/docker-compose.mailhog.yml -f addons/docker-compose.elk.yml up -d
+        ```
+
+    * **Levantar servicios específicos:** Para levantar servicios específicos, ejecuta el siguiente comando desde la raíz del proyecto:
+
+        ```bash
+        docker compose -f docker-compose.yml -f addons/docker-compose.nombre.yml up -d
+        ```
+
+        (Reemplaza `nombre` con el nombre del archivo `docker-compose` que deseas utilizar, por ejemplo, `mongodb` o `rabbitmq`).
 
 3.  **Accede a Portainer:**
 
@@ -46,40 +73,19 @@ Este proyecto configura un entorno de desarrollo local utilizando Docker Compose
     * **MySQL:** Conéctate utilizando un cliente MySQL al puerto 25060 con la contraseña `26QCDexGh7`.
     * **PostgreSQL:** Conéctate utilizando un cliente PostgreSQL al puerto 25061 con la contraseña `26QCDexGh7`.
     * **Redis:** Conéctate utilizando un cliente Redis al puerto 6379 con la contraseña `FeSBbMIywltp0LMdQcT9nStuZUosLxUVqwX2dJInvfc=`.
-
-## Herramientas adicionales recomendadas
-
-Considera agregar las siguientes herramientas para mejorar tu entorno de desarrollo:
-
-* **pgAdmin (para PostgreSQL):**
-    * Una interfaz gráfica para la gestión de bases de datos PostgreSQL.
-    * Facilita la visualización y administración de bases de datos.
-* **phpMyAdmin (para MySQL):**
-    * Una interfaz gráfica para la gestión de bases de datos MySQL.
-    * Facilita la visualización y administración de bases de datos.
-* **Adminer:**
-    * Alternativa ligera a phpMyAdmin, soporta MySQL, PostgreSQL, SQLite, entre otras.
-* **RabbitMQ:**
-    * Un broker de mensajes para la comunicación entre servicios.
-    * Útil para arquitecturas basadas en microservicios.
-* **MongoDB:**
-    * Una base de datos NoSQL para aplicaciones que requieren flexibilidad y escalabilidad.
-* **Traefik (o Nginx Proxy Manager):**
-    * Un proxy inverso para gestionar el acceso a tus servicios.
-    * Facilita la configuración de dominios y certificados SSL.
-* **Mailhog:**
-    * Un servidor de correo electrónico de prueba para capturar y visualizar correos electrónicos enviados por tus aplicaciones.
-    * Útil para probar funcionalidades de envío de correos.
-* **Elasticsearch/Kibana:**
-    * Para logs y analisis de datos, muy util para microservicios.
-* **Dockerized development enviroment:**
-    * Contenedores dockerizados para los lenguajes de programacion que uses, esto ayuda a mantener homogeneo el ambiente de desarrollo.
+    * **MongoDB:** Conéctate utilizando un cliente MongoDB al puerto 27017 con el usuario `root` y la contraseña `26QCDexGh7`.
+    * **RabbitMQ:** Accede a la interfaz de administración en `http://localhost:15672` con el usuario `guest` y la contraseña `26QCDexGh7`.
+    * **Traefik:** Accede a la interfaz web en `http://localhost:8081` y a la API en `http://localhost:8082`.
+    * **Mailhog:** Accede a la interfaz web en `http://localhost:8025`.
+    * **Kibana:** Accede a la interfaz web en `http://localhost:5601`.
 
 ## Consideraciones
 
 * Asegúrate de cambiar las contraseñas predeterminadas por contraseñas seguras en un entorno de producción.
 * Ajusta las configuraciones de los servicios según tus necesidades específicas.
 * Asegurate de que tus microservicios esten conectados a la red development-network.
+* Recuerda que Traefik ocupara los puertos 80 y 443, por lo tanto, apache2 no funcionara en esos puertos.
+* Elasticsearch y Kibana consumen muchos recursos, ajusta los limites de memoria segun tu hardware.
 
 ## Contribución
 
