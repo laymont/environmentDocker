@@ -39,8 +39,8 @@ Este proyecto configura un entorno de desarrollo local utilizando Docker Compose
 1.  **Clona el repositorio:**
 
     ```bash
-    git clone <tu_repositorio>
-    cd <directorio_del_proyecto>
+    git clone git@github.com:laymont/environmentDocker.git
+    cd environmentDocker
     ```
 
 2.  **Levanta los contenedores:**
