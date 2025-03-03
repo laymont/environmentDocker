@@ -17,8 +17,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/etc/traefik/traefik.toml
     networks:
-      - development-network
+      - staging-network
 
 networks:
-  development-network:
+  staging-network:
+    name: staging-network
     driver: bridge

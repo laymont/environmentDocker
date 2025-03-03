@@ -1,0 +1,28 @@
+# Portainer docker-compose.yml
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    environment:
+      - TZ=America/Caracas  # Establece la zona horaria
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+    networks:
+      - portainer-network
+
+networks:
+  portainer-network:
+    name: portainer-network
+    driver: bridge
+
+volumes:
+  portainer_data:
+    name: portainer_data

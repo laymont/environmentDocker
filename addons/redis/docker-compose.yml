@@ -1,0 +1,31 @@
+# Redis docker-compose.yml
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    environment:
+      - TZ=${TZ}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    command: [
+      "redis-server",
+      "--bind", "0.0.0.0",
+      "--requirepass", "FeSBbMIywltp0LMdQcT9nStuZUosLxUVqwX2dJInvfc=",
+      "--appendonly", "yes",
+      "--save", "60", "1"
+    ]
+    networks:
+      - staging-network
+
+networks:
+  staging-network:
+    name: staging-network
+    driver: bridge
+
+volumes:
+  redis_data:
+    name: redis_data
