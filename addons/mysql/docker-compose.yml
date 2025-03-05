@@ -1,0 +1,27 @@
+# Mysql docker-compose.yml
+services:
+    mysql-server:
+        image: mysql:8.0
+        container_name: mysql
+        restart: unless-stopped
+        command: --bind-address=0.0.0.0
+        ports:
+            - "25060:3306"
+        environment:
+            TZ: ${TZ}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Usar variable de entorno
+
+        networks:
+            - staging-network
+
+        volumes:
+            - mysql_data:/var/lib/mysql
+
+networks:
+    staging-network:
+        name: staging-network
+        driver: bridge
+
+volumes:
+    mysql_data:
+        name: mysql_data

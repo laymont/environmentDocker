@@ -1,0 +1,23 @@
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: always
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+
+    volumes:
+      - mailhog_data:/mailhog/data
+
+    networks:
+      - staging-network
+
+networks:
+  staging-network:
+    name: staging-network
+    driver: bridge
+
+volumes:
+  mailhog_data:
+    name: mailhog_data
